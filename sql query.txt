@@ -1,0 +1,63 @@
+CREATE DATABASE  CourseCenter;
+ 
+USE CourseCenter;
+
+CREATE TABLE Courses (
+    CourseID INT NOT NULL AUTO_INCREMENT,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Duration INT,              
+    Level VARCHAR(50),         
+    Fee DECIMAL(10,2),         
+    PRIMARY KEY (CourseID)
+);
+
+CREATE TABLE Instructors (
+    InstructorID INT NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    Phone VARCHAR(50),
+    PRIMARY KEY (InstructorID),
+    UNIQUE KEY uq_Instructor_Email (Email)
+) ;
+
+CREATE TABLE Students (
+    StudentID INT NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    Phone VARCHAR(50),
+    Address VARCHAR(255),
+    PRIMARY KEY (StudentID),
+    UNIQUE KEY uq_Student_Email (Email)
+) ;
+
+CREATE TABLE Registrations (
+    RegistrationID INT NOT NULL AUTO_INCREMENT,
+    StudentID INT NOT NULL,
+    CourseID INT NOT NULL,
+    EnrollmentDate DATE,       
+    PaymentStatus VARCHAR(50),   
+    PRIMARY KEY (RegistrationID),
+    CONSTRAINT fk_Registration_Student FOREIGN KEY (StudentID)
+        REFERENCES Students(StudentID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_Registration_Course FOREIGN KEY (CourseID)
+        REFERENCES Courses(CourseID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE CourseInstructor (
+    CourseID INT NOT NULL,
+    InstructorID INT NOT NULL,
+    PRIMARY KEY (CourseID, InstructorID),
+    CONSTRAINT fk_CourseInstructor_Course FOREIGN KEY (CourseID)
+        REFERENCES Courses(CourseID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_CourseInstructor_Instructor FOREIGN KEY (InstructorID)
+        REFERENCES Instructors(InstructorID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
