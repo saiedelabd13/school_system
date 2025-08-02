@@ -1,9 +1,9 @@
 package com.school.Services;
 
 import com.school.Entity.Registration;
+import com.school.Repository.CoursesRepo;
 import com.school.Repository.RegistrationRepo;
 import com.school.Repository.StudentRepo;
-import com.school.Repository.CoursesRepo;
 import com.school.dto.RegistrationDTO;
 import com.school.mapper.RegistrationMapper;
 import org.springframework.stereotype.Service;
@@ -67,7 +67,6 @@ public class RegistrationServices {
         registration.setRegistrationDate(java.time.LocalDateTime.now());
         registrationRepo.save(registration);
     }
-
 
 
 }

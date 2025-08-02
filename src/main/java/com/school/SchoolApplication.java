@@ -12,13 +12,18 @@ import com.school.dto.InstructorDTO;
 import com.school.dto.StudentsDTO;
 import com.school.mapper.CourseMapper;
 import com.school.security.entity.AppUser;
+import com.school.security.entity.Role;
+import com.school.security.reposatory.RoleRepo;
 import com.school.security.reposatory.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @SpringBootApplication
 @RestController
@@ -36,8 +41,11 @@ public class SchoolApplication {
     private CourseMapper courseMapper;
     @Autowired
     private CoursesRepo coursesRepo;
-
+    @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private RoleRepo roleRepo;
+    @Autowired
     private InstructorRepo instructorRepo;
 
     public static void main(String[] args) {
@@ -45,7 +53,7 @@ public class SchoolApplication {
     }
 
     @Bean
-    public CommandLineRunner initData() {
+    public CommandLineRunner initData(RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
         return args -> {
             // Check if data already exists
             if (coursesRepo.count() > 0) {
@@ -135,8 +143,22 @@ public class SchoolApplication {
             appUser3.setUsername("guest");
 
 
+            Role adminRole = roleRepo.save(new Role("ADMIN"));
+            Role userRole = roleRepo.save(new Role("USER"));
 
+            AppUser user = new AppUser();
+            user.setUsername("user1");
+            user.setPassword(passwordEncoder.encode("password1"));
+            //   user.setEnabled(true);
+            user.setRoles(Set.of(userRole));
+            userRepo.save(user);
 
+            AppUser admin = new AppUser();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("1234"));
+            // admin.setEnabled(true);
+            admin.setRoles(Set.of(adminRole));
+            userRepo.save(admin);
 
 
         };

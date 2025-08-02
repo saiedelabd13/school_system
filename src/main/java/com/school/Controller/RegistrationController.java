@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/registrations")
 public class RegistrationController {
-@Autowired
+    @Autowired
     private RegistrationServices registrationService;
 
     @PostMapping("/addRegistration")
@@ -37,7 +37,6 @@ public class RegistrationController {
     public List<RegistrationDTO> findAllRegistrations() {
         return registrationService.findAllRegistration();
     }
-
 
 
 }
