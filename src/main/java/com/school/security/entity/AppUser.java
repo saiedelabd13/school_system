@@ -21,6 +21,8 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String fullName;
+
     private String username;
 
     private String password;
@@ -32,4 +34,17 @@ public class AppUser {
     private Set<Role> roles = new HashSet<>();
 
 
+    private boolean isEnabled;
+
+    private boolean isCredentialsNonExpired;
+
+    private boolean isAccountNonLocked;
+
+    private boolean isAccountNonExpired;
+
+
+    public AppUser(Long id) {
+        super();
+        this.id = id;
+    }
 }

@@ -20,6 +20,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,6 +48,9 @@ public class SchoolApplication {
     private RoleRepo roleRepo;
     @Autowired
     private InstructorRepo instructorRepo;
+
+    @Autowired
+    private Environment environment;
 
     public static void main(String[] args) {
         SpringApplication.run(SchoolApplication.class, args);
@@ -161,6 +165,22 @@ public class SchoolApplication {
             userRepo.save(admin);
 
 
+        };
+    }
+
+    @Bean
+    CommandLineRunner logActiveProfile() {
+        return args -> {
+            String activeProfile = environment.getProperty("spring.profiles.active");
+            System.out.println("Active Profile: " + activeProfile);
+
+            String authSecret = environment.getProperty("auth.secret");
+            String accessExpiration = environment.getProperty("auth.access.expiration");
+            String refreshExpiration = environment.getProperty("auth.refresh.expiration");
+
+            System.out.println("auth.secret: " + authSecret);
+            System.out.println("auth.access.expiration: " + accessExpiration);
+            System.out.println("auth.refresh.expiration: " + refreshExpiration);
         };
     }
 }

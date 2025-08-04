@@ -37,4 +37,7 @@ public class UserService {
     }
 
 
+    public Object loadUserByUsername(String username) {
+            return null;
+    }
 }

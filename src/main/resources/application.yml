@@ -14,10 +14,9 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    spring:
-      devtools:
-        restart:
-          enabled: true
+  devtools:
+    restart:
+      enabled: true
     ##################################################
 #  security:
 #    user:
@@ -53,8 +52,9 @@ springdoc:
 application-description: "API for School Management System"
 application-version: "1.0.0"
 
-
-
-
-
-
+auth:
+  secret: mohamed
+  access:
+    expiration: 3600 # Token expiration time in seconds
+  refresh:
+    expiration: 7200 # Refresh token expiration time in seconds
