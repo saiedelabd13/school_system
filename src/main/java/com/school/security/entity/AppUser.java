@@ -19,7 +19,7 @@ public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String fullName;
 
@@ -30,7 +30,7 @@ public class AppUser {
     @JoinTable(name = "sec_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-
+    @OrderColumn(name = "id")
     private Set<Role> roles = new HashSet<>();
 
 

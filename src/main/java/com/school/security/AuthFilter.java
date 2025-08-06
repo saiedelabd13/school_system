@@ -12,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -54,12 +53,8 @@ public class AuthFilter extends OncePerRequestFilter {
     }
 
     protected boolean isSwaggerUrl(String url) {
-        if (url.contains("swagger") || url.contains("api-docs") || url.contains("configuration/ui") || url.contains("webjars/")
-                || url.contains("swagger-resources") || url.contains("configuration/security") || url.contains("actuator")) {
-            return true;
-        } else {
-            return false;
-        }
+        return url.contains("swagger") || url.contains("api-docs") || url.contains("configuration/ui") || url.contains("webjars/")
+                || url.contains("swagger-resources") || url.contains("configuration/security") || url.contains("actuator");
 
     }
 }

@@ -1,17 +1,12 @@
 package com.school.security.controller;
 
 import com.school.security.AccessTokenDto;
-import com.school.security.service.AuthService;
 import com.school.security.JWTResponseDto;
 import com.school.security.LoginRequestDto;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.school.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,7 +17,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<JWTResponseDto> login (@RequestBody LoginRequestDto loginRequest){
+    public ResponseEntity<JWTResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
 
         JWTResponseDto jwtResponseDto = authService.login(loginRequest.getLogin(), loginRequest.getPassword());
 

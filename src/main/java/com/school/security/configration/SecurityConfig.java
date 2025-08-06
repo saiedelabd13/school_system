@@ -1,9 +1,12 @@
-package com.school.security;
+package com.school.security.configration;
 
 
+import com.school.security.AuthFilter;
+import com.school.security.JwtUnAuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,24 +19,21 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig  {
+public class SecurityConfig {
 
+
+    String[] PUBLIC_END_POINTS = {"/api/v1/auth/login", "/api/v1/auth/refresh-token", "/api/v1/auth/logout"};
+    @Autowired
+    @Lazy
+    private UserDetailsService userDetailsService;
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtUnAuthResponse jwtUnAuthResponse;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-    String [] PUBLIC_END_POINTS = {"/api/v1/auth/login", "/api/v1/auth/refresh-token", "/api/v1/auth/logout"};
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUnAuthResponse jwtUnAuthResponse;
 
     // Remove the configure method
 
@@ -49,8 +49,12 @@ public class SecurityConfig  {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/auth/login", "/home", "/public/**").permitAll()
                         .requestMatchers(PUBLIC_END_POINTS).permitAll()
                         .anyRequest().authenticated()
+
                 );
         return http.build();
     }

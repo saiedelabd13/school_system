@@ -1,32 +1,29 @@
-
 package com.school.security;
+
+import com.school.security.entity.AppUser;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.school.security.entity.AppUser;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-
-import lombok.Getter;
-import lombok.Setter;
-
 @Setter
 @Getter
 public class AppUserDetail implements UserDetails {
 
-    private Long id ;
+    private Long id;
 
     private String fullName;
 
     private String userName;
 
-    private String password ;
+    private String password;
 
-    private List<GrantedAuthority> authorities ;
+    private List<GrantedAuthority> authorities;
 
     private boolean isEnabled;
 
@@ -37,7 +34,6 @@ public class AppUserDetail implements UserDetails {
     private boolean isAccountNonExpired;
 
 
-
     public AppUserDetail() {
         super();
         // TODO Auto-generated constructor stub
@@ -45,10 +41,10 @@ public class AppUserDetail implements UserDetails {
 
     public AppUserDetail(AppUser user) {
         super();
-        this.id= user.getId();
-        this.fullName =user.getFullName();
-        this.userName= user.getUsername();
-        this.password= user.getPassword();
+        this.id = user.getId();
+        this.fullName = user.getFullName();
+        this.userName = user.getUsername();
+        this.password = user.getPassword();
         this.isEnabled = user.isEnabled();
         this.isCredentialsNonExpired = user.isCredentialsNonExpired();
         this.isAccountNonExpired = user.isAccountNonExpired();
@@ -56,7 +52,7 @@ public class AppUserDetail implements UserDetails {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if(!user.getRoles().isEmpty()) {
+        if (!user.getRoles().isEmpty()) {
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority(role.getName()));
             });
@@ -85,25 +81,25 @@ public class AppUserDetail implements UserDetails {
     @Override
     public boolean isAccountNonExpired() {
         // TODO Auto-generated method stub
-        return isAccountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
         // TODO Auto-generated method stub
-        return isAccountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
-        return isCredentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
         // TODO Auto-generated method stub
-        return isEnabled;
+        return true;
     }
 
 }

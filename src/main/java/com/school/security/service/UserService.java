@@ -1,19 +1,26 @@
 package com.school.security.service;
 
+import com.school.security.AppUserDetail;
 import com.school.security.entity.AppUser;
 import com.school.security.reposatory.UserRepo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService {
+@RequiredArgsConstructor
+
+public class UserService implements UserDetailsService {
 
     private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
 
     public List<AppUser> findAllUsers() {
         return userRepo.findAll();
@@ -37,7 +44,21 @@ public class UserService {
     }
 
 
-    public Object loadUserByUsername(String username) {
-            return null;
+    public AppUser save(AppUser entity) {
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        return userRepo.save(entity);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        Optional<AppUser> appUser = userRepo.findByUsername(username);
+
+        if (!appUser.isPresent()) {
+
+            throw new UsernameNotFoundException("This User Not found with selected user name :- " + username);
+        }
+
+        return new AppUserDetail(appUser.get());
     }
 }

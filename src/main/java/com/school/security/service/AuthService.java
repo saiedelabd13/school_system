@@ -79,7 +79,6 @@ public class AuthService {
         tokenInfo.setUserAgentText(userAgent);
         tokenInfo.setLocalIpAddress(ip.getHostAddress());
         tokenInfo.setRemoteIpAddress(httpRequest.getRemoteAddr());
-        // tokenInfo.setLoginInfo(createLoginInfoFromRequestUserAgent());
         return tokenInfoService.save(tokenInfo);
     }
 
@@ -101,9 +100,7 @@ public class AuthService {
 
     public void logoutUser(String refreshToken) {
         Optional<TokenInfo> tokenInfo = tokenInfoService.findByRefreshToken(refreshToken);
-        if (tokenInfo.isPresent()) {
-            tokenInfoService.deleteById(tokenInfo.get().getId());
-        }
+        tokenInfo.ifPresent(info -> tokenInfoService.deleteById(info.getId()));
 
     }
 

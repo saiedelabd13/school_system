@@ -16,7 +16,7 @@ public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi userManagementApi() {
-        String packagesToscan[] = {"com.service.usermanagement"};
+        String[] packagesToscan = {"com.service.usermanagement"};
         return GroupedOpenApi.builder()
                 .group("User Management API")
                 .packagesToScan(packagesToscan)
@@ -26,7 +26,7 @@ public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi setupApi() {
-        String packagesToscan[] = {"com.global.book"};
+        String[] packagesToscan = {"com.global.book"};
         return GroupedOpenApi.builder()
                 .group("Book API")
                 .packagesToScan(packagesToscan)
